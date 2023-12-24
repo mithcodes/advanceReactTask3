@@ -24,16 +24,30 @@ let dummyexpenses = [
 ];
 
 function App() {
-    const [expenses, setExpenses] = useState(dummyexpenses)
+  const [expenses, setExpenses] = useState(dummyexpenses);
+  const [selectedYear, setSelectedYear] = useState(null);
 
-    
-    return (
-        <div>
-            <h2>Let's get started</h2>
-            <NewExpense  />
-            <Expenses items={expenses} />
-        </div>
-    );
+  const addExpenseHandler = (expense) => {
+    const updatedExpenses = [expense, ...expenses];
+    setExpenses(updatedExpenses);
+  };
+
+  const filterExpensesHandler = (selectedYear) => {
+    setSelectedYear(selectedYear);
+  };
+
+  
+  const filteredExpenses = selectedYear
+    ? expenses.filter((expense) => expense.date.getFullYear() === selectedYear)
+    : expenses;
+
+  return (
+    <div>
+      <h2>Let's get started</h2>
+      <NewExpense onAddExpense={addExpenseHandler} />
+      <Expenses items={filteredExpenses} onFilter={filterExpensesHandler} />
+    </div>
+  );
 }
 
 export default App;
